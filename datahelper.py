@@ -1,0 +1,48 @@
+import json
+from datetime import datetime, date, time
+import pandas as pd
+import numpy as np
+from datetime import timedelta
+
+def load_data(path):
+    with open('51527.json') as f:
+        data = json.load(f)
+
+    columns = ['time'] + list(next(iter(data[0]['input_data']['rwis_data'].values())).keys())
+    #df = pd.DataFrame(columns=columns)
+
+    arr = np.array(columns)
+
+    for item in data:
+        batch = item['input_data']['rwis_data']
+        for time in batch.keys():
+            d = datetime.strptime(time[:-4], "%Y-%m-%d %H:%M")
+            row = [d] + list(batch[time].values())
+            arr = np.vstack([arr, row])
+    df = pd.DataFrame(columns=arr[0], data=arr[1:])
+    df = df.sort_values(by=['time']).drop_duplicates().reset_index(drop=True)
+    return df
+
+def get_xy(path, num_hours, error_minutes):
+    """
+    Returnes x and y dataframes
+    :param path: path to input file
+    :param num_hours: number of hours to make forecast
+    :param error_minutes: acceptable error in minutes when building a y-set: y = x + num_hours +- error
+    :return: x and y sets
+    """
+    df = load_data(path)
+    hour = timedelta(hours=1)
+    minute = timedelta(minutes=1)
+    x = pd.DataFrame()
+    y = pd.DataFrame()
+    for i in range(df.shape[0]):
+        time = df.at[i, 'time']
+        pr_time1 = time + num_hours * hour - error_minutes*minute
+        pr_time2 = time + num_hours * hour + error_minutes*minute
+        b = df[(pr_time1 <= df['time']) & (df['time'] <= pr_time2)]
+        if not b.empty:
+            x = x.append(df.iloc[[i]])
+            closest_time = min(b['time'].tolist(), key=lambda d: abs(d - time))
+            y = y.append(b[b['time'] == closest_time]).reset_index(drop=True)
+    return x.loc[:, x.columns != 'time'].reset_index(drop=True), y.loc[:, y.columns != 'time']
