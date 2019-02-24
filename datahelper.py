@@ -1,3 +1,7 @@
+"""
+Builder of a dataset
+author: Alsu Vakhitova
+"""
 import json
 from datetime import datetime, date, time
 import pandas as pd
@@ -5,11 +9,10 @@ import numpy as np
 from datetime import timedelta
 
 def load_data(path):
-    with open('51527.json') as f:
+    with open(path) as f:
         data = json.load(f)
 
     columns = ['time'] + list(next(iter(data[0]['input_data']['rwis_data'].values())).keys())
-    #df = pd.DataFrame(columns=columns)
 
     arr = np.array(columns)
 
@@ -44,5 +47,7 @@ def get_xy(path, num_hours, error_minutes):
         if not b.empty:
             x = x.append(df.iloc[[i]])
             closest_time = min(b['time'].tolist(), key=lambda d: abs(d - time))
-            y = y.append(b[b['time'] == closest_time]).reset_index(drop=True)
-    return x.loc[:, x.columns != 'time'].reset_index(drop=True), y.loc[:, y.columns != 'time']
+            y = y.append(b[b['time'] == closest_time])
+    x = x.loc[:, x.columns != 'time'].reset_index(drop=True)
+    y = y.loc[:, y.columns != 'time'].reset_index(drop=True)
+    return x, y
