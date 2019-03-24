@@ -9,7 +9,7 @@ from sklearn.preprocessing import StandardScaler
 import numpy as np
 
 
-x, y = datahelper.get_xy('51527.json', num_hours=3, error_minutes=15)
+x, y = datahelper.get_xy('data/', num_hours=3, error_minutes=15)
 
 scalerX = StandardScaler()
 scalerY = StandardScaler()

@@ -1,12 +1,15 @@
+"""
+Decision Tree regression model
+author: Alsu Vakhitova
+"""
 import datahelper
 import numpy as np
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from sklearn.model_selection import train_test_split
 import operator
-import matplotlib.pyplot as plt
 
-x, y = datahelper.get_xy('51527.json', num_hours=3, error_minutes=15)
+x, y = datahelper.get_xy('data/', num_hours=3, error_minutes=15)
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.5)
 
