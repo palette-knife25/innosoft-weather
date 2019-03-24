@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 x, y = datahelper.get_xy('51527.json', num_hours=3, error_minutes=15)
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.5)
 
 scores = {}
 

@@ -6,25 +6,31 @@ import json
 from datetime import datetime, date, time
 import pandas as pd
 import numpy as np
+import glob
 from datetime import timedelta
 
 def load_data(path):
-    with open(path) as f:
-        data = json.load(f)
+    pattern = path + '*.json'
+    files = glob.glob(pattern)
+    df_total = pd.DataFrame()
+    for file in files:
+        with open(file) as f:
+            data = json.load(f)
 
-    columns = ['time'] + list(next(iter(data[0]['input_data']['rwis_data'].values())).keys())
+        columns = ['time'] + list(next(iter(data[0]['input_data']['rwis_data'].values())).keys())
 
-    arr = np.array(columns)
+        arr = np.array(columns)
 
-    for item in data:
-        batch = item['input_data']['rwis_data']
-        for time in batch.keys():
-            d = datetime.strptime(time[:-4], "%Y-%m-%d %H:%M")
-            row = [d] + list(batch[time].values())
-            arr = np.vstack([arr, row])
-    df = pd.DataFrame(columns=arr[0], data=arr[1:])
-    df = df.sort_values(by=['time']).drop_duplicates().reset_index(drop=True)
-    return df
+        for item in data:
+            batch = item['input_data']['rwis_data']
+            for time in batch.keys():
+                d = datetime.strptime(time[:-4], "%Y-%m-%d %H:%M")
+                row = [d] + list(batch[time].values())
+                arr = np.vstack([arr, row])
+        df = pd.DataFrame(columns=arr[0], data=arr[1:])
+        df = df.sort_values(by=['time']).drop_duplicates().reset_index(drop=True)
+        df_total = pd.concat(df_total, df)
+    return df_total
 
 def get_xy(path, num_hours, error_minutes):
     """
