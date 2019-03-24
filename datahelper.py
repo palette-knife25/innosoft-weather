@@ -77,9 +77,6 @@ def get_xy(path, num_hours, error_minutes):
             x = x.append(df.iloc[[i]])
             closest_time = min(b['time'].tolist(), key=lambda d: abs(d - time))
             y = y.append(b[b['time'] == closest_time])
-    x = x.reset_index(drop=True)
-    y = y.reset_index(drop=True)
-    idx = np.random.permutation(x.index)
-    x_shuffled = x.reindex(idx)
-    y_shuffled = y.reindex(idx)
-    return x_shuffled.loc[:, x_shuffled.columns != 'time'], y_shuffled.loc[:, y_shuffled.columns != 'time']
+    x = x.loc[:, x.columns != 'time'].reset_index(drop=True)
+    y = y.loc[:, y.columns != 'time'].reset_index(drop=True)
+    return x,y
