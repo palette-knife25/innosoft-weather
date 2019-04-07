@@ -6,6 +6,7 @@ import datahelper
 import numpy as np
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from sklearn.ensemble import BaggingRegressor
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import train_test_split
 import operator
 import copy
@@ -17,7 +18,7 @@ scores = {}
 models = []
 
 for n in range(2, 20):
-    estimator = BaggingRegressor(max_samples=0.5, n_estimators=n)
+    estimator = BaggingRegressor(base_estimator=DecisionTreeRegressor(max_depth=4), max_samples=0.5, n_estimators=n)
     estimator.fit(x_train, y_train)
     scores[n] = estimator.score(x_test,y_test)
     models.append(copy.copy(estimator))
