@@ -28,31 +28,34 @@ def load_data(path):
                 row = [d] + list(batch[time].values())
                 arr = np.vstack([arr, row])
         df = pd.DataFrame(columns=arr[0], data=arr[1:])
-        day_part = []
-        month = []
-        for time in df['time']:
-            month.append(time.month)
-            one = time.replace(hour=0, minute=0, second=0, microsecond=0)
-            two = time.replace(hour=6, minute=0, second=0, microsecond=0)
-            three = time.replace(hour=12, minute=0, second=0, microsecond=0)
-            four = time.replace(hour=18, minute=0, second=0, microsecond=0)
-            five = time.replace(hour=23, minute=59, second=59, microsecond=0)
-            if one <= time and time <= two:
-                day_part.append(1)
-                continue
-            if two < time and time <= three:
-                day_part.append(2)
-                continue
-            if three < time and time <= four:
-                day_part.append(3)
-                continue
-            if four < time and time <= five:
-                day_part.append(4)
-                continue
-        df['day_part'] = day_part
-        df['month'] = month
+        # This part adds dummy variables that indicate quarter of the day and month, didn't prove to be useful
+        # day_part = []
+        # month = []
+        # for time in df['time']:
+        #     month.append(time.month)
+        #     one = time.replace(hour=0, minute=0, second=0, microsecond=0)
+        #     two = time.replace(hour=6, minute=0, second=0, microsecond=0)
+        #     three = time.replace(hour=12, minute=0, second=0, microsecond=0)
+        #     four = time.replace(hour=18, minute=0, second=0, microsecond=0)
+        #     five = time.replace(hour=23, minute=59, second=59, microsecond=0)
+        #     if one <= time and time <= two:
+        #         day_part.append(1)
+        #         continue
+        #     if two < time and time <= three:
+        #         day_part.append(2)
+        #         continue
+        #     if three < time and time <= four:
+        #         day_part.append(3)
+        #         continue
+        #     if four < time and time <= five:
+        #         day_part.append(4)
+        #         continue
+        # df['day_part'] = day_part
+        # df['month'] = month
         df = df.sort_values(by=['time']).drop_duplicates().reset_index(drop=True)
         df_total = pd.concat([df_total, df])
+    df_total = df_total.replace(9999, np.NaN)
+    df_total = df_total.dropna()
     return df_total.sort_values(by=['time']).drop_duplicates().reset_index(drop=True)
 
 def get_xy(path, num_hours, error_minutes):
@@ -76,7 +79,5 @@ def get_xy(path, num_hours, error_minutes):
         if not b.empty:
             x = x.append(df.iloc[[i]])
             closest_time = min(b['time'].tolist(), key=lambda d: abs(d - time))
-            y = y.append(b[b['time'] == closest_time])
-    x = x.loc[:, x.columns != 'time'].reset_index(drop=True)
-    y = y.loc[:, y.columns != 'time'].reset_index(drop=True)
-    return x,y
+            y = y.append(b[b['time'] == closest_time].iloc[0])
+    return x.loc[:, x.columns != 'time'].reset_index(drop=True), y.loc[:, y.columns != 'time'].reset_index(drop=True)
