@@ -10,17 +10,13 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
 x, y = datahelper.get_xy('data/', num_hours=3, error_minutes=15)
-scalerX = StandardScaler()
-scalerY = StandardScaler()
-x_sc = scalerX.fit_transform(x)
-y_sc = scalerY.fit_transform(y)
-x_train, x_test, y_train, y_test = train_test_split(x_sc, y_sc, test_size=0.2)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
 
 y_pred = np.zeros((y_test.shape[0], 1))
 # Huber predicts for one feature at a time => iterate through columns
 for column in range(y_test.shape[1]):
-    svr = HuberRegressor().fit(x_train,y_train[:,column])
-    pred = np.array([svr.predict(x_test)]).T
+    svr = HuberRegressor().fit(x_train.values,y_train.values[:,column])
+    pred = np.array([svr.predict(x_test.values)]).T
     y_pred = np.hstack((y_pred, pred))
 
 y_pred = y_pred[:,1:]
