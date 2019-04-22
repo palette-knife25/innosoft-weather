@@ -10,6 +10,7 @@ import glob
 from datetime import timedelta
 
 def load_data(path):
+    path = "../" + path
     pattern = path + '*.json'
     files = glob.glob(pattern)
     df_total = pd.DataFrame()
