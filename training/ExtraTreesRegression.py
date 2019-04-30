@@ -1,4 +1,4 @@
-import datahelper
+import training.datahelper as datahelper
 import numpy as np
 from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
@@ -26,9 +26,10 @@ index, score = sorted_by_scores[0]
 extra_trees.set_params(n_estimators=estimators[index])
 extra_trees.fit(x_train, y_train)
 
-filename = 'models/extra_trees_model.sav'
+filename = '../models/extra_trees_model.sav'
 print('Saving model with ', estimators[index], ' estimators to file ', filename)
-pickle.dump(extra_trees, open(filename, 'wb'))
+with open(filename, 'wb') as h:
+    pickle.dump(extra_trees, h)
 
 
 # for i in range(0, 5):

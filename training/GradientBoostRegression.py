@@ -1,4 +1,4 @@
-import datahelper
+import training.datahelper as datahelper
 import numpy as np
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.multioutput import MultiOutputRegressor

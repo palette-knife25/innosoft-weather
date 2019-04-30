@@ -15,7 +15,7 @@ def load_data(path):
     files = glob.glob(pattern)
     df_total = pd.DataFrame()
     for file in files:
-        with open(file) as f:
+        with open(file, encoding='utf-8') as f:
             data = json.load(f)
 
         columns = ['time'] + list(next(iter(data[0]['input_data']['rwis_data'].values())).keys())

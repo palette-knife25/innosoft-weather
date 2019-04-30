@@ -2,7 +2,7 @@
 SVM regression model
 author: Alsu Vakhitova
 """
-import datahelper
+import training.datahelper as datahelper
 from sklearn.svm import SVR
 from sklearn.metrics import mean_absolute_error
 from sklearn.preprocessing import StandardScaler

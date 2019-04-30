@@ -23,7 +23,8 @@ def predict_conditions(model_path, time, wind_speed, wind_gusts, dew_point_tempe
     time_end = time_end + timedelta(hours=3)
 
     # Load saved model:
-    loaded_model = pickle.load(open(model_path, 'rb'))
+    with open(model_path, 'rb') as h:
+        loaded_model = pickle.load(h)
 
     # Predict values:
     predicted = loaded_model.predict(dataframe)

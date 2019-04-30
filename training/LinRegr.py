@@ -2,7 +2,7 @@
 Linear regression model
 author: Alsu Vakhitova
 """
-import datahelper
+import training.datahelper as datahelper
 from datetime import timedelta
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 from sklearn.linear_model import LinearRegression

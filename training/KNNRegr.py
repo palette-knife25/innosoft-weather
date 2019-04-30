@@ -2,7 +2,7 @@
 KNN regression model
 author: Alsu Vakhitova
 """
-import datahelper
+import training.datahelper as datahelper
 import numpy as np
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 from sklearn.neighbors import KNeighborsRegressor
