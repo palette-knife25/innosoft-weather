@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
 import json
+import sys
 
 
 def predict_conditions(model_path, time, wind_speed, wind_gusts, dew_point_temperature, road_temperature,
@@ -25,6 +26,10 @@ def predict_conditions(model_path, time, wind_speed, wind_gusts, dew_point_tempe
     # Load saved model:
     with open(model_path, 'rb') as h:
         loaded_model = pickle.load(h)
+
+    if loaded_model is None:
+        print("Error in Interface: Model file is not found")
+        sys.exit()
 
     # Predict values:
     predicted = loaded_model.predict(dataframe)
