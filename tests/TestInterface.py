@@ -34,9 +34,9 @@ class TestInterface(unittest.TestCase):
 
         self.assertIsNotNone(predicted), "Interface returned no prediction"
 
-        # self.assertIsNotNone(data['timestamp'])
-        # time_end = datetime.strptime(time, "%Y-%m-%d %H:%M UTC") + timedelta(hours=3)
-        # self.assertEqual(str(time_end), data['timestamp'])
+        self.assertIsNotNone(data['timestamp'])
+        time_end = datetime.strptime(time, "%Y-%m-%d %H:%M UTC") + timedelta(hours=3)
+        self.assertEqual(str(time_end), data['timestamp']), "Prediction does not contain timestamp"
 
         self.assertIsNotNone(data['wind_speed']), "Prediction does not contain wind_speed"
         self.assertIsNotNone(data['wind_gusts']), "Prediction does not contain wind_gusts"
