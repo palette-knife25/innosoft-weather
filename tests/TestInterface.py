@@ -1,3 +1,8 @@
+"""
+This is for testing Interface
+
+Author: Dinar Salakhutdinov
+"""
 import Interface
 import unittest
 import json
@@ -20,6 +25,7 @@ class TestInterface(unittest.TestCase):
         snow_intensity = 0.0
         rain_intensity = 0.0
         humidity = 69.3
+        hoursdelta = 3  # model is trained on this parameter, so check carefully that they correspond
 
         predicted = Interface.predict_conditions(model_path=model_path, time=time,
                                                  wind_speed=wind_speed,
@@ -28,7 +34,8 @@ class TestInterface(unittest.TestCase):
                                                  underground_temperature=underground_temperature,
                                                  air_temperature=air_temperature,
                                                  snow_intensity=snow_intensity,
-                                                 rain_intensity=rain_intensity, humidity=humidity)
+                                                 rain_intensity=rain_intensity,
+                                                 humidity=humidity, hoursdelta=hoursdelta)
 
         data = json.loads(predicted)
 

@@ -1,3 +1,10 @@
+"""
+This code provides interface for weather prediction
+It accepts current parameters as strings (model_path, time) and numbers (all others)
+It returns JSON prediction
+
+Author: Dinar Salakhutdinov
+"""
 import pickle
 from datetime import datetime, timedelta
 import pandas as pd
@@ -7,7 +14,7 @@ import sys
 
 
 def predict_conditions(model_path, time, wind_speed, wind_gusts, dew_point_temperature, road_temperature,
-                       underground_temperature, air_temperature, snow_intensity, rain_intensity, humidity):
+                       underground_temperature, air_temperature, snow_intensity, rain_intensity, humidity, hoursdelta=3):
     # Convert arguments to dataframe needed for model:
     columns = ['wind_speed', 'wind_gusts', 'dew_point_temperature', 'road_temperature', 'underground_temperature',
                'air_temperature',
@@ -21,7 +28,7 @@ def predict_conditions(model_path, time, wind_speed, wind_gusts, dew_point_tempe
 
     # Add three hours to initial time:
     time_end = datetime.strptime(time, "%Y-%m-%d %H:%M UTC")
-    time_end = time_end + timedelta(hours=3)
+    time_end = time_end + timedelta(hours=hoursdelta)
 
     # Load saved model:
     with open(model_path, 'rb') as h:
