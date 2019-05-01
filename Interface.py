@@ -44,14 +44,14 @@ def predict_conditions(model_path, time, wind_speed, wind_gusts, dew_point_tempe
     # Create dictionary in roadcast format:
     roadcast_dict = dict()
     roadcast_dict['timestamp'] = str(time_end)
-    roadcast_dict['wind_speed'] = predicted[0][0]
-    roadcast_dict['wind_gusts'] = predicted[0][1]
-    roadcast_dict['dew_point_temperature'] = predicted[0][2]
-    roadcast_dict['road_temperature'] = predicted[0][3]
-    roadcast_dict['underground_temperature'] = predicted[0][4]
-    roadcast_dict['air_temperature'] = predicted[0][5]
-    roadcast_dict['snow_intensity'] = predicted[0][6]
-    roadcast_dict['rain_intensity'] = predicted[0][7]
-    roadcast_dict['humidity'] = predicted[0][8]
+    roadcast_dict['wind_speed'] = predicted[0][0].item()
+    roadcast_dict['wind_gusts'] = predicted[0][1].item()
+    roadcast_dict['dew_point_temperature'] = predicted[0][2].item()
+    roadcast_dict['road_temperature'] = predicted[0][3].item()
+    roadcast_dict['underground_temperature'] = predicted[0][4].item()
+    roadcast_dict['air_temperature'] = predicted[0][5].item()
+    roadcast_dict['snow_intensity'] = predicted[0][6].item()
+    roadcast_dict['rain_intensity'] = predicted[0][7].item()
+    roadcast_dict['humidity'] = predicted[0][8].item()
 
     return json.dumps(roadcast_dict)

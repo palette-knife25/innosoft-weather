@@ -14,7 +14,8 @@ class TestInterface(unittest.TestCase):
     def test_interface(self):
 
         # Test parameters:
-        model_path = '../models/extra_trees_model.sav'
+        #model_path = '../models/extra_trees_model.sav'
+        model_path = '../models/seq_nn_model.sav'
         time = '2019-02-13 09:01 UTC'
         wind_speed = 3.3
         wind_gusts = 4
